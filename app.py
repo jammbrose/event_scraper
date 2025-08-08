@@ -2,6 +2,7 @@
 Flask web application for Waltham Event Discovery.
 """
 
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from datetime import datetime, timedelta
 from database import EventDatabase
