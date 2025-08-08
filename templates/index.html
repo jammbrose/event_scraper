@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center mb-4">
+        <h1 class="display-4 mb-3">🎯 Discover Events in Waltham, MA</h1>
+        <p class="lead">Find amazing activities and events happening in your community!</p>
+    </div>
+</div>
+
+<!-- Enhanced Search and Filter Section -->
+<div class="search-container">
+    <form method="GET" id="search-form">
+        <div class="row g-4">
+            <!-- Search Bar -->
+            <div class="col-md-6">
+                <label for="search" class="form-label">🔍 Search Events</label>
+                <input type="text" name="search" id="search" class="form-control" 
+                       placeholder="Search by event name, location, or description..."
+                       value="{{ search_query or '' }}">
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="col-md-3">
+                <label for="category" class="form-label">📂 Category</label>
+                <select name="category" id="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>
+                            {{ cat.title() }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Source Filter -->
+            <div class="col-md-3">
+                <label for="source" class="form-label">🏢 Source</label>
+                <select name="source" id="source" class="form-select">
+                    <option value="">All Sources</option>
+                    {% for src in sources %}
+                        <option value="{{ src }}" {% if src == selected_source %}selected{% endif %}>
+                            {{ src }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Date Range -->
+            <div class="col-md-4">
+                <label for="start_date" class="form-label">📅 Start Date</label>
+                <input type="date" name="start_date" id="start_date" class="form-control" 
+                       value="{{ start_date or '' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="end_date" class="form-label">📅 End Date</label>
+                <input type="date" name="end_date" id="end_date" class="form-control" 
+                       value="{{ end_date or '' }}">
+            </div>
+            
+            <!-- Search Button -->
+            <div class="col-md-4">
+                <label class="form-label">&nbsp;</label>
+                <button type="submit" class="btn btn-primary d-block w-100">
+                    🔍 Search Events
+                </button>
+            </div>
+        </div>
+        
+        <!-- Quick Clear Button -->
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <a href="/" class="btn btn-outline-primary">Clear All Filters</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Results Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>🎉 Upcoming Events</h2>
+            <div class="stats-counter">
+                <strong>{{ events|length }}</strong> events found
+            </div>
+        </div>
+        
+        {% if events %}
+            <div class="row">
+                {% for event in events %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <small class="text-muted">🏢 {{ event.source_name }}</small>
+                                <span class="badge bg-primary">{{ event.category.title() }}</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ event.name }}</h5>
+                                
+                                <div class="mb-3">
+                                    <p class="card-text mb-2">
+                                        <strong>📅 When:</strong> 
+                                        {% if event.date_time %}
+                                            {{ event.date_time.strftime('%B %d, %Y') }}<br>
+                                            <span class="text-primary">🕐 {{ event.date_time.strftime('%I:%M %p') }}</span>
+                                        {% else %}
+                                            <span class="text-muted">Date TBA</span>
+                                        {% endif %}
+                                    </p>
+                                    <p class="card-text mb-2">
+                                        <strong>📍 Where:</strong> 
+                                        <span class="text-secondary">{{ event.location or 'Location TBA' }}</span>
+                                    </p>
+                                </div>
+                                
+                                <p class="card-text flex-grow-1">
+                                    {{ event.description[:150] }}{% if event.description|length > 150 %}...{% endif %}
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                {% if event.source_url %}
+                                    <a href="{{ event.source_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        🔗 View Details
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>🔍 No Events Found</h3>
+                        <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                        <a href="/" class="btn btn-primary">Clear All Filters</a>
+                        <a href="{{ url_for('update_events') }}" class="btn btn-outline-primary">Update Database</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if events|length > 10 %}
+<div class="row mt-4">
+    <div class="col-md-12 text-center">
+        <p class="text-muted">Showing {{ events|length }} events. More events may be available with different filters.</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
