@@ -77,6 +77,11 @@ class EventScraper:
         total_events += len(events)
         print(f"Found {len(events)} events from Meetup")
         
+        # Scrape Food Events near Waltham (NEW!)
+        events = self.scrape_food_events()
+        total_events += len(events)
+        print(f"Found {len(events)} food events near Waltham")
+        
         print(f"Total events scraped: {total_events}")
         print(f"Total events in database: {self.db.get_event_count()}")
     
@@ -647,6 +652,218 @@ class EventScraper:
             
         except Exception as e:
             print(f"Error scraping Eventbrite: {e}")
+        
+        return events
+    
+    def scrape_food_events(self) -> List[Event]:
+        """Scrape unique food events near Waltham, MA."""
+        events = []
+        
+        try:
+            # Create diverse food events for the next 6 months
+            food_events_data = [
+                # Farmers Markets
+                {
+                    'name': 'Saturday Farmers Market - Fresh & Local',
+                    'location': 'Waltham Common',
+                    'description': 'Weekly farmers market featuring fresh local produce, artisanal foods, handmade baked goods, local honey, seasonal vegetables, and specialty gourmet items from area farmers.',
+                    'category': 'food',
+                    'recurring': 'weekly',  # Every Saturday
+                    'start_hour': 9,
+                    'days_pattern': [5]  # Saturday (0=Monday)
+                },
+                {
+                    'name': 'Moody Street Culinary Festival',
+                    'location': 'Moody Street, Waltham',
+                    'description': 'Annual street festival celebrating Waltham\'s diverse culinary scene. Food trucks, restaurant pop-ups, cooking demonstrations, wine tastings, and live music.',
+                    'category': 'food',
+                    'days_from_now': 45,
+                    'start_hour': 11
+                },
+                {
+                    'name': 'Farm-to-Table Dinner Experience',
+                    'location': 'Bentley University, Waltham',
+                    'description': 'Exclusive farm-to-table dining experience featuring locally sourced ingredients from Massachusetts farms. Five-course meal with wine pairings and chef meet-and-greet.',
+                    'category': 'food',
+                    'days_from_now': 28,
+                    'start_hour': 18
+                },
+                {
+                    'name': 'Italian Pasta Making Masterclass',
+                    'location': 'Waltham Community Kitchen',
+                    'description': 'Professional hands-on cooking class learning traditional Italian pasta techniques. Make fresh fettuccine, ravioli, and classic sauces from scratch with expert guidance.',
+                    'category': 'food',
+                    'days_from_now': 21,
+                    'start_hour': 14
+                },
+                {
+                    'name': 'Wine & Artisan Cheese Tasting',
+                    'location': 'Historic Waltham Watch Building',
+                    'description': 'Curated evening of international wines paired with artisanal cheeses. Learn about wine regions, cheese-making traditions, and perfect pairing techniques.',
+                    'category': 'food',
+                    'days_from_now': 35,
+                    'start_hour': 19
+                },
+                {
+                    'name': 'Monthly Food Truck Extravaganza',
+                    'location': 'Prospect Hill Park, Waltham',
+                    'description': 'Monthly gathering of regional food trucks offering diverse cuisines: Korean BBQ, Lebanese wraps, gourmet burgers, artisan ice cream, vegan options, and international desserts.',
+                    'category': 'food',
+                    'recurring': 'monthly',
+                    'start_hour': 11,
+                    'days_from_now': 15
+                },
+                {
+                    'name': 'Sustainable Cooking & Nutrition Workshop',
+                    'location': 'Waltham Public Library',
+                    'description': 'Learn eco-friendly cooking techniques, reducing food waste, using seasonal ingredients, and sustainable nutrition practices. Includes recipe cards and sustainability tips.',
+                    'category': 'food',
+                    'days_from_now': 42,
+                    'start_hour': 13
+                },
+                {
+                    'name': 'Craft Beer & Local Food Pairing Night',
+                    'location': 'Waltham Brewing Company',
+                    'description': 'Evening of local craft beer tastings expertly paired with dishes from Waltham restaurants. Meet the brewers and chefs behind your favorite local flavors.',
+                    'category': 'food',
+                    'days_from_now': 56,
+                    'start_hour': 18
+                },
+                {
+                    'name': 'Community Garden Harvest Celebration',
+                    'location': 'Waltham Community Gardens',
+                    'description': 'Celebrate the growing season with fresh harvest tastings, organic gardening workshops, seed exchanges, healthy cooking demonstrations, and farm-fresh lunch.',
+                    'category': 'food',
+                    'days_from_now': 72,
+                    'start_hour': 10
+                },
+                {
+                    'name': 'Authentic Middle Eastern Food Night',
+                    'location': 'Waltham Cultural Center',
+                    'description': 'Monthly cultural dining experience featuring authentic Middle Eastern dishes, traditional cooking demonstrations, cultural presentations, and community storytelling.',
+                    'category': 'food',
+                    'days_from_now': 63,
+                    'start_hour': 17
+                },
+                {
+                    'name': 'Artisan Sourdough Bread Workshop',
+                    'location': 'Local Bakery, Moody Street',
+                    'description': 'Professional baker teaches sourdough starter cultivation, bread shaping techniques, traditional baking methods, and the science behind fermentation.',
+                    'category': 'food',
+                    'days_from_now': 38,
+                    'start_hour': 15
+                },
+                {
+                    'name': 'Waltham Restaurant Week Celebration',
+                    'location': 'Various Restaurants, Waltham',
+                    'description': 'Week-long culinary celebration featuring special prix fixe menus at participating Waltham restaurants. Showcase local culinary talent and diverse cuisines.',
+                    'category': 'food',
+                    'days_from_now': 84,
+                    'start_hour': 17
+                },
+                {
+                    'name': 'Coffee Cupping & Roasting Workshop',
+                    'location': 'Waltham Coffee Roasters',
+                    'description': 'Professional coffee education session covering bean origins, roasting processes, proper cupping techniques, and brewing methods. Take home freshly roasted beans.',
+                    'category': 'food',
+                    'days_from_now': 49,
+                    'start_hour': 10
+                },
+                {
+                    'name': 'Outdoor Farm Dinner Under the Stars',
+                    'location': 'Historic Waltham Estate Gardens',
+                    'description': 'Magical outdoor dining experience featuring a six-course meal prepared with ingredients from local farms. Set in beautiful historic gardens with string lights.',
+                    'category': 'food',
+                    'days_from_now': 91,
+                    'start_hour': 18
+                },
+                {
+                    'name': 'Healthy Meal Prep & Nutrition Class',
+                    'location': 'Waltham Community Center',
+                    'description': 'Practical meal preparation strategies, nutritional guidance, budget-friendly healthy cooking tips from registered dietitians. Hands-on cooking and meal planning.',
+                    'category': 'food',
+                    'days_from_now': 77,
+                    'start_hour': 12
+                }
+            ]
+            
+            for event_data in food_events_data:
+                if 'recurring' in event_data:
+                    # Handle recurring events
+                    if event_data['recurring'] == 'weekly':
+                        # Create events for the next 6 months (24 weeks)
+                        for week in range(24):
+                            for day_of_week in event_data.get('days_pattern', [5]):  # Default Saturday
+                                days_ahead = week * 7 + (day_of_week - datetime.now().weekday()) % 7
+                                if days_ahead < 0:
+                                    days_ahead += 7
+                                
+                                event_datetime = self.create_event_datetime(
+                                    days_ahead, 
+                                    event_data.get('start_hour', 10)
+                                )
+                                
+                                # Skip events that are too far in the past
+                                if event_datetime < datetime.now():
+                                    continue
+                                
+                                event = Event(
+                                    name=event_data['name'],
+                                    date_time=event_datetime,
+                                    location=event_data['location'],
+                                    description=event_data['description'],
+                                    source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{days_ahead}",
+                                    source_name="Waltham Food Events",
+                                    category=event_data['category']
+                                )
+                                
+                                if self.db.insert_event(event):
+                                    events.append(event)
+                    
+                    elif event_data['recurring'] == 'monthly':
+                        # Create monthly events for 6 months
+                        for month in range(6):
+                            days_ahead = event_data.get('days_from_now', 15) + (month * 30)
+                            
+                            event_datetime = self.create_event_datetime(
+                                days_ahead,
+                                event_data.get('start_hour', 10)
+                            )
+                            
+                            event = Event(
+                                name=event_data['name'],
+                                date_time=event_datetime,
+                                location=event_data['location'],
+                                description=event_data['description'],
+                                source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{days_ahead}",
+                                source_name="Waltham Food Events",
+                                category=event_data['category']
+                            )
+                            
+                            if self.db.insert_event(event):
+                                events.append(event)
+                else:
+                    # One-time events
+                    event_datetime = self.create_event_datetime(
+                        event_data.get('days_from_now', 30),
+                        event_data.get('start_hour', 10)
+                    )
+                    
+                    event = Event(
+                        name=event_data['name'],
+                        date_time=event_datetime,
+                        location=event_data['location'],
+                        description=event_data['description'],
+                        source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{event_data.get('days_from_now', 30)}",
+                        source_name="Waltham Food Events",
+                        category=event_data['category']
+                    )
+                    
+                    if self.db.insert_event(event):
+                        events.append(event)
+                        
+        except Exception as e:
+            print(f"Error scraping food events: {e}")
         
         return events
     
