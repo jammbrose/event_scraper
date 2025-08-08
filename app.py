@@ -9,6 +9,7 @@ from database import EventDatabase
 from models import EVENT_CATEGORIES
 from scraper import EventScraper
 import threading
+import time
 
 
 app = Flask(__name__)
@@ -16,6 +17,68 @@ app.secret_key = 'your-secret-key-change-this'  # Change this in production
 
 # Initialize database
 db = EventDatabase()
+
+# Global flag to track if initial scraping is complete
+initial_scraping_complete = False
+scraping_in_progress = False
+
+
+def ensure_events_loaded():
+    """Ensure events are loaded before serving any requests."""
+    global initial_scraping_complete, scraping_in_progress
+    
+    if initial_scraping_complete:
+        return True
+    
+    # Check if we have recent events
+    if db.has_recent_events():
+        current_count = db.get_event_count()
+        print(f"Found {current_count} recent events in database")
+        initial_scraping_complete = True
+        return True
+    
+    # If no recent events, run the scraper
+    if not scraping_in_progress:
+        current_count = db.get_event_count()
+        print(f"Database has {current_count} events but needs refresh. Starting event scraping...")
+        scraping_in_progress = True
+        
+        try:
+            scraper = EventScraper()
+            scraper.scrape_all_sources()
+            initial_scraping_complete = True
+            scraping_in_progress = False
+            
+            new_count = db.get_event_count()
+            print(f"Scraping complete! Now have {new_count} events.")
+            return True
+            
+        except Exception as e:
+            print(f"Error during scraping: {e}")
+            scraping_in_progress = False
+            # Still allow the app to run even if scraping fails
+            initial_scraping_complete = True
+            return True
+    
+    return False
+
+
+@app.before_request
+def before_request():
+    """Run before each request to ensure events are loaded."""
+    global scraping_in_progress
+    
+    # Don't block requests for static files or the update endpoint
+    if (request.endpoint and 
+        (request.endpoint.startswith('static') or 
+         request.endpoint == 'update_events')):
+        return
+    
+    if scraping_in_progress:
+        # Return a loading page while scraping is in progress
+        return render_template('loading.html')
+    
+    ensure_events_loaded()
 
 
 @app.route('/')
@@ -186,7 +249,13 @@ if __name__ == '__main__':
     import os
     
     print("Starting Waltham Event Discovery App...")
-    print(f"Current event count: {db.get_event_count()}")
+    
+    # Ensure events are loaded before starting the server
+    print("Checking event database...")
+    ensure_events_loaded()
+    
+    current_count = db.get_event_count()
+    print(f"Ready to serve with {current_count} events!")
     
     # Get port from environment variable (for Railway/Render)
     port = int(os.environ.get('PORT', 5000))

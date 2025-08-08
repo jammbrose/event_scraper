@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Loading Events - Waltham Events{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card text-center">
+            <div class="card-body py-5">
+                <!-- Loading Animation -->
+                <div class="mb-4">
+                    <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                
+                <!-- Loading Messages -->
+                <h2 class="mb-3">🎯 Loading Waltham Events</h2>
+                <p class="lead text-muted mb-4">
+                    We're gathering the latest events from across Waltham for you...
+                </p>
+                
+                <!-- Progress Steps -->
+                <div class="progress-steps mb-4">
+                    <div class="d-flex flex-column gap-2 text-start">
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-grow spinner-grow-sm text-success me-2" role="status"></div>
+                            <small>Scanning City of Waltham events...</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-grow spinner-grow-sm text-success me-2" role="status"></div>
+                            <small>Checking Waltham Public Library...</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-grow spinner-grow-sm text-success me-2" role="status"></div>
+                            <small>Finding Charles River Museum events...</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-grow spinner-grow-sm text-success me-2" role="status"></div>
+                            <small>Gathering Brandeis University activities...</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-grow spinner-grow-sm text-success me-2" role="status"></div>
+                            <small>Collecting recreation center programs...</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-grow spinner-grow-sm text-success me-2" role="status"></div>
+                            <small>Searching Waltham Common events...</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-grow spinner-grow-sm text-success me-2" role="status"></div>
+                            <small>Finding Eventbrite listings...</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-grow spinner-grow-sm text-success me-2" role="status"></div>
+                            <small>Discovering Meetup groups...</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fun Facts -->
+                <div class="alert alert-info">
+                    <h6 class="mb-2">📍 Did You Know?</h6>
+                    <p class="mb-0 small">
+                        Waltham is known as "The Watch City" because it was once home to the 
+                        Waltham Watch Company, which revolutionized watchmaking in America!
+                    </p>
+                </div>
+                
+                <!-- Estimated Time -->
+                <p class="text-muted small">
+                    <em>This usually takes 30-60 seconds. Thanks for your patience!</em>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Auto-refresh script -->
+<script>
+    // Auto-refresh the page every 3 seconds to check if scraping is complete
+    setTimeout(function() {
+        window.location.reload();
+    }, 3000);
+    
+    // Add some visual feedback
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate progress steps
+        const steps = document.querySelectorAll('.progress-steps .d-flex');
+        steps.forEach((step, index) => {
+            setTimeout(() => {
+                step.style.opacity = '0.7';
+                setTimeout(() => {
+                    step.style.opacity = '1';
+                }, 500);
+            }, index * 200);
+        });
+    });
+</script>
+
+<!-- Custom CSS for loading page -->
+<style>
+    .spinner-border {
+        animation: spin 1s linear infinite;
+    }
+    
+    .spinner-grow {
+        animation: grow 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes grow {
+        0%, 100% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    .progress-steps {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+</style>
+{% endblock %}

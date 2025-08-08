@@ -178,6 +178,23 @@ class EventDatabase:
                 AND date_time <= datetime('now', '+6 months', 'localtime')
             ''')
             return cursor.fetchone()[0]
+    
+    def has_recent_events(self, hours: int = 24) -> bool:
+        """Check if we have events that were added in the last N hours."""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT COUNT(*) FROM events 
+                WHERE created_at >= datetime('now', '-{} hours', 'localtime')
+                AND date_time >= datetime('now', 'localtime')
+            '''.format(hours))
+            recent_count = cursor.fetchone()[0]
+            
+            # Also check total upcoming event count
+            total_count = self.get_event_count()
+            
+            # Consider database "fresh" if we have recent events or a good number of total events
+            return recent_count > 0 or total_count > 10
 
 
 if __name__ == "__main__":
