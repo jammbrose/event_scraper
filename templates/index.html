@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12 text-center mb-4">
-        <h1 class="display-4 mb-3">🎯 Discover Events in Waltham, MA</h1>
+    <div class="col-12 text-center mb-4">
+        <h1 class="display-5 display-md-4 mb-3">🎯 Discover Events in Waltham, MA</h1>
         <p class="lead">Find amazing activities and events happening in your community!</p>
     </div>
 </div>
@@ -11,9 +11,9 @@
 <!-- Enhanced Search and Filter Section -->
 <div class="search-container">
     <form method="GET" id="search-form">
-        <div class="row g-4">
+        <div class="row g-3">
             <!-- Search Bar -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <label for="search" class="form-label">🔍 Search Events</label>
                 <input type="text" name="search" id="search" class="form-control" 
                        placeholder="Search by event name, location, or description..."
@@ -21,7 +21,7 @@
             </div>
             
             <!-- Category Filter -->
-            <div class="col-md-3">
+            <div class="col-6 col-md-3">
                 <label for="category" class="form-label">📂 Category</label>
                 <select name="category" id="category" class="form-select">
                     <option value="">All Categories</option>
@@ -34,7 +34,7 @@
             </div>
             
             <!-- Source Filter -->
-            <div class="col-md-3">
+            <div class="col-6 col-md-3">
                 <label for="source" class="form-label">🏢 Source</label>
                 <select name="source" id="source" class="form-select">
                     <option value="">All Sources</option>
@@ -47,21 +47,21 @@
             </div>
             
             <!-- Date Range -->
-            <div class="col-md-4">
+            <div class="col-6 col-sm-4">
                 <label for="start_date" class="form-label">📅 Start Date</label>
                 <input type="date" name="start_date" id="start_date" class="form-control" 
                        value="{{ start_date or '' }}">
             </div>
-            <div class="col-md-4">
+            <div class="col-6 col-sm-4">
                 <label for="end_date" class="form-label">📅 End Date</label>
                 <input type="date" name="end_date" id="end_date" class="form-control" 
                        value="{{ end_date or '' }}">
             </div>
             
             <!-- Search Button -->
-            <div class="col-md-4">
-                <label class="form-label">&nbsp;</label>
-                <button type="submit" class="btn btn-primary d-block w-100">
+            <div class="col-12 col-sm-4">
+                <label class="form-label d-none d-sm-block">&nbsp;</label>
+                <button type="submit" class="btn btn-primary d-block w-100 mt-2 mt-sm-0">
                     🔍 Search Events
                 </button>
             </div>
@@ -69,8 +69,8 @@
         
         <!-- Quick Clear Button -->
         <div class="row mt-3">
-            <div class="col-md-12 text-center">
-                <a href="/" class="btn btn-outline-primary">Clear All Filters</a>
+            <div class="col-12 text-center">
+                <a href="/" class="btn btn-outline-primary btn-sm">Clear All Filters</a>
             </div>
         </div>
     </form>
@@ -79,8 +79,8 @@
 <!-- Results Header -->
 <div class="row">
     <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>🎉 Upcoming Events</h2>
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4">
+            <h2 class="mb-2 mb-sm-0">🎉 Upcoming Events</h2>
             <div class="stats-counter">
                 <strong>{{ events|length }}</strong> events found
             </div>
@@ -89,11 +89,13 @@
         {% if events %}
             <div class="row">
                 {% for event in events %}
-                    <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="col-12 col-sm-6 col-lg-4 mb-4">
                         <div class="card h-100">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <small class="text-muted">🏢 {{ event.source_name }}</small>
-                                <span class="badge bg-primary">{{ event.category.title() }}</span>
+                            <div class="card-header">
+                                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
+                                    <small class="text-muted mb-1 mb-sm-0">🏢 {{ event.source_name }}</small>
+                                    <span class="badge bg-primary">{{ event.category.title() }}</span>
+                                </div>
                             </div>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ event.name }}</h5>
@@ -115,12 +117,12 @@
                                 </div>
                                 
                                 <p class="card-text flex-grow-1">
-                                    {{ event.description[:150] }}{% if event.description|length > 150 %}...{% endif %}
+                                    {{ event.description[:120] }}{% if event.description|length > 120 %}...{% endif %}
                                 </p>
                             </div>
                             <div class="card-footer">
                                 {% if event.source_url %}
-                                    <a href="{{ event.source_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                    <a href="{{ event.source_url }}" target="_blank" class="btn btn-outline-primary btn-sm w-100">
                                         🔗 View Details
                                     </a>
                                 {% endif %}
@@ -134,9 +136,11 @@
                 <div class="card">
                     <div class="card-body">
                         <h3>🔍 No Events Found</h3>
-                        <p class="text-muted">Try adjusting your search criteria or filters.</p>
-                        <a href="/" class="btn btn-primary">Clear All Filters</a>
-                        <a href="{{ url_for('update_events') }}" class="btn btn-outline-primary">Update Database</a>
+                        <p class="text-muted mb-3">Try adjusting your search criteria or filters.</p>
+                        <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+                            <a href="/" class="btn btn-primary">Clear All Filters</a>
+                            <a href="{{ url_for('update_events') }}" class="btn btn-outline-primary">Update Database</a>
+                        </div>
                     </div>
                 </div>
             </div>

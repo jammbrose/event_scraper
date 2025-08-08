@@ -1,8 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang=    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">🎯 Waltham Events</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button><head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Discover events in Waltham, MA. Search concerts, festivals, workshops, and community activities.">
+    <meta name="theme-color" content="#4299e1">
     <title>{% block title %}Waltham Events{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
@@ -13,6 +20,11 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Waltham Events">
     
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
@@ -40,13 +52,13 @@
         </div>
     </nav>
 
-    <main class="container mt-5">
+    <main class="container mt-3 mt-md-5">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-info alert-dismissible fade show" role="alert">
                         <strong>ℹ️ Info:</strong> {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -56,7 +68,7 @@
     </main>
 
     <footer>
-        <div class="container text-center">
+        <div class="container">
             <p>&copy; 2025 Waltham Event Discovery | Events sourced from public listings | Made with ❤️ for Waltham, MA</p>
         </div>
     </footer>
@@ -99,16 +111,91 @@
                     searchForm.submit();
                 });
             });
+            
+            // Mobile optimization: Prevent zoom on input focus
+            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                document.querySelectorAll('input[type="text"], input[type="date"], select, textarea').forEach(function(input) {
+                    input.addEventListener('focus', function() {
+                        input.style.fontSize = '16px';
+                    });
+                    input.addEventListener('blur', function() {
+                        input.style.fontSize = '';
+                    });
+                });
+            }
+            
+            // Smooth scroll for mobile navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Add loading state to forms
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function() {
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        const originalText = submitBtn.innerHTML;
+                        submitBtn.innerHTML = '🔍 Searching...';
+                        submitBtn.disabled = true;
+                        
+                        // Re-enable after 3 seconds as fallback
+                        setTimeout(() => {
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                        }, 3000);
+                    }
+                });
+            });
         });
         
-        // Add loading state to search
-        function showLoading() {
-            const button = document.querySelector('.btn-primary');
-            if (button) {
-                button.innerHTML = '🔍 Searching...';
-                button.disabled = true;
-            }
+        // Performance: Lazy load images if any
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
         }
+        
+        // Add touch gestures for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+        
+        document.addEventListener('touchend', e => {
+            const touchEndX = e.changedTouches[0].screenX;
+            const touchEndY = e.changedTouches[0].screenY;
+            const diffX = touchStartX - touchEndX;
+            const diffY = touchStartY - touchEndY;
+            
+            // Swipe detection (horizontal swipe > 100px, vertical < 50px)
+            if (Math.abs(diffX) > 100 && Math.abs(diffY) < 50) {
+                // Could add swipe navigation here if needed
+            }
+        }, { passive: true });
     </script>
 
     {% block scripts %}{% endblock %}
