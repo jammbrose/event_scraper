@@ -167,6 +167,23 @@ def update_events():
     return redirect(url_for('index'))
 
 
+@app.route('/event/<int:event_id>')
+def event_detail(event_id):
+    """Show detailed information for a specific event."""
+    try:
+        event = db.get_event_by_id(event_id)
+        if not event:
+            flash('Event not found.', 'error')
+            return redirect(url_for('index'))
+        
+        return render_template('event_detail.html', event=event)
+        
+    except Exception as e:
+        print(f"Error loading event {event_id}: {e}")
+        flash('Error loading event details.', 'error')
+        return redirect(url_for('index'))
+
+
 @app.route('/api/events')
 def api_events():
     """API endpoint to get events as JSON with search and filtering."""

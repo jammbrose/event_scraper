@@ -666,8 +666,13 @@ class EventScraper:
                 {
                     'name': 'Saturday Farmers Market - Fresh & Local',
                     'location': 'Waltham Common',
-                    'description': 'Weekly farmers market featuring fresh local produce, artisanal foods, handmade baked goods, local honey, seasonal vegetables, and specialty gourmet items from area farmers.',
+                    'description': 'Weekly farmers market featuring fresh local produce, artisanal foods, handmade baked goods, local honey, seasonal vegetables, and specialty gourmet items from area farmers. Support local agriculture while enjoying fresh, seasonal ingredients.',
                     'category': 'food',
+                    'cost': 'Free to attend',
+                    'organizer': 'Waltham Farmers Market Association',
+                    'contact_info': 'info@walthamfarmersmarket.org | (781) 555-0123',
+                    'registration_required': False,
+                    'age_restrictions': 'All ages welcome',
                     'recurring': 'weekly',  # Every Saturday
                     'start_hour': 9,
                     'days_pattern': [5]  # Saturday (0=Monday)
@@ -675,40 +680,65 @@ class EventScraper:
                 {
                     'name': 'Moody Street Culinary Festival',
                     'location': 'Moody Street, Waltham',
-                    'description': 'Annual street festival celebrating Waltham\'s diverse culinary scene. Food trucks, restaurant pop-ups, cooking demonstrations, wine tastings, and live music.',
+                    'description': 'Annual street festival celebrating Waltham\'s diverse culinary scene. Food trucks, restaurant pop-ups, cooking demonstrations, wine tastings, and live music. Features over 20 local restaurants and food vendors.',
                     'category': 'food',
+                    'cost': 'Free admission, food varies $5-15',
+                    'organizer': 'Waltham Tourism Board',
+                    'contact_info': 'events@walthamtourism.org | (781) 555-0456',
+                    'registration_required': False,
+                    'age_restrictions': '21+ for alcohol tastings',
                     'days_from_now': 45,
                     'start_hour': 11
                 },
                 {
                     'name': 'Farm-to-Table Dinner Experience',
                     'location': 'Bentley University, Waltham',
-                    'description': 'Exclusive farm-to-table dining experience featuring locally sourced ingredients from Massachusetts farms. Five-course meal with wine pairings and chef meet-and-greet.',
+                    'description': 'Exclusive farm-to-table dining experience featuring locally sourced ingredients from Massachusetts farms. Five-course meal with wine pairings and chef meet-and-greet. Limited seating for intimate experience.',
                     'category': 'food',
+                    'cost': '$95 per person',
+                    'organizer': 'Bentley Culinary Arts Program',
+                    'contact_info': 'culinary@bentley.edu | (781) 555-0789',
+                    'registration_required': True,
+                    'age_restrictions': '21+ (alcohol served)',
                     'days_from_now': 28,
                     'start_hour': 18
                 },
                 {
                     'name': 'Italian Pasta Making Masterclass',
                     'location': 'Waltham Community Kitchen',
-                    'description': 'Professional hands-on cooking class learning traditional Italian pasta techniques. Make fresh fettuccine, ravioli, and classic sauces from scratch with expert guidance.',
+                    'description': 'Professional hands-on cooking class learning traditional Italian pasta techniques. Make fresh fettuccine, ravioli, and classic sauces from scratch with expert guidance. Take home pasta and recipes.',
                     'category': 'food',
+                    'cost': '$75 per person',
+                    'organizer': 'Chef Marco Romano',
+                    'contact_info': 'classes@walthamcooking.com | (781) 555-0321',
+                    'registration_required': True,
+                    'age_restrictions': 'Ages 12+ (under 16 with adult)',
                     'days_from_now': 21,
                     'start_hour': 14
                 },
                 {
                     'name': 'Wine & Artisan Cheese Tasting',
                     'location': 'Historic Waltham Watch Building',
-                    'description': 'Curated evening of international wines paired with artisanal cheeses. Learn about wine regions, cheese-making traditions, and perfect pairing techniques.',
+                    'description': 'Curated evening of international wines paired with artisanal cheeses. Learn about wine regions, cheese-making traditions, and perfect pairing techniques from certified sommelier.',
                     'category': 'food',
+                    'cost': '$45 per person',
+                    'organizer': 'Waltham Wine Society',
+                    'contact_info': 'tastings@walthamwine.org | (781) 555-0654',
+                    'registration_required': True,
+                    'age_restrictions': '21+ only',
                     'days_from_now': 35,
                     'start_hour': 19
                 },
                 {
                     'name': 'Monthly Food Truck Extravaganza',
                     'location': 'Prospect Hill Park, Waltham',
-                    'description': 'Monthly gathering of regional food trucks offering diverse cuisines: Korean BBQ, Lebanese wraps, gourmet burgers, artisan ice cream, vegan options, and international desserts.',
+                    'description': 'Monthly gathering of regional food trucks offering diverse cuisines: Korean BBQ, Lebanese wraps, gourmet burgers, artisan ice cream, vegan options, and international desserts. Family-friendly atmosphere with picnic seating.',
                     'category': 'food',
+                    'cost': 'Free admission, food $8-20',
+                    'organizer': 'Waltham Parks & Recreation',
+                    'contact_info': 'parks@waltham.gov | (781) 555-0987',
+                    'registration_required': False,
+                    'age_restrictions': 'All ages welcome',
                     'recurring': 'monthly',
                     'start_hour': 11,
                     'days_from_now': 15
@@ -716,72 +746,117 @@ class EventScraper:
                 {
                     'name': 'Sustainable Cooking & Nutrition Workshop',
                     'location': 'Waltham Public Library',
-                    'description': 'Learn eco-friendly cooking techniques, reducing food waste, using seasonal ingredients, and sustainable nutrition practices. Includes recipe cards and sustainability tips.',
+                    'description': 'Learn eco-friendly cooking techniques, reducing food waste, using seasonal ingredients, and sustainable nutrition practices. Includes recipe cards and sustainability tips. Interactive hands-on session.',
                     'category': 'food',
+                    'cost': '$25 per person',
+                    'organizer': 'Green Living Collective',
+                    'contact_info': 'workshops@greenliving.org | (781) 555-0246',
+                    'registration_required': True,
+                    'age_restrictions': 'Ages 16+ (teens with adult)',
                     'days_from_now': 42,
                     'start_hour': 13
                 },
                 {
                     'name': 'Craft Beer & Local Food Pairing Night',
                     'location': 'Waltham Brewing Company',
-                    'description': 'Evening of local craft beer tastings expertly paired with dishes from Waltham restaurants. Meet the brewers and chefs behind your favorite local flavors.',
+                    'description': 'Evening of local craft beer tastings expertly paired with dishes from Waltham restaurants. Meet the brewers and chefs behind your favorite local flavors. Limited to 40 guests.',
                     'category': 'food',
+                    'cost': '$65 per person',
+                    'organizer': 'Waltham Brewing Company',
+                    'contact_info': 'events@walthambrewing.com | (781) 555-0135',
+                    'registration_required': True,
+                    'age_restrictions': '21+ only',
                     'days_from_now': 56,
                     'start_hour': 18
                 },
                 {
                     'name': 'Community Garden Harvest Celebration',
                     'location': 'Waltham Community Gardens',
-                    'description': 'Celebrate the growing season with fresh harvest tastings, organic gardening workshops, seed exchanges, healthy cooking demonstrations, and farm-fresh lunch.',
+                    'description': 'Celebrate the growing season with fresh harvest tastings, organic gardening workshops, seed exchanges, healthy cooking demonstrations, and farm-fresh lunch. Kids activities included.',
                     'category': 'food',
+                    'cost': 'Free, lunch $12',
+                    'organizer': 'Waltham Community Garden Association',
+                    'contact_info': 'garden@walthamcommunity.org | (781) 555-0468',
+                    'registration_required': False,
+                    'age_restrictions': 'All ages welcome',
                     'days_from_now': 72,
                     'start_hour': 10
                 },
                 {
                     'name': 'Authentic Middle Eastern Food Night',
                     'location': 'Waltham Cultural Center',
-                    'description': 'Monthly cultural dining experience featuring authentic Middle Eastern dishes, traditional cooking demonstrations, cultural presentations, and community storytelling.',
+                    'description': 'Monthly cultural dining experience featuring authentic Middle Eastern dishes, traditional cooking demonstrations, cultural presentations, and community storytelling. Family-style dining.',
                     'category': 'food',
+                    'cost': '$35 per person, $15 kids',
+                    'organizer': 'Waltham Cultural Exchange',
+                    'contact_info': 'culture@walthamcenter.org | (781) 555-0579',
+                    'registration_required': True,
+                    'age_restrictions': 'All ages welcome',
                     'days_from_now': 63,
                     'start_hour': 17
                 },
                 {
                     'name': 'Artisan Sourdough Bread Workshop',
                     'location': 'Local Bakery, Moody Street',
-                    'description': 'Professional baker teaches sourdough starter cultivation, bread shaping techniques, traditional baking methods, and the science behind fermentation.',
+                    'description': 'Professional baker teaches sourdough starter cultivation, bread shaping techniques, traditional baking methods, and the science behind fermentation. Take home starter and fresh loaf.',
                     'category': 'food',
+                    'cost': '$55 per person',
+                    'organizer': 'Artisan Bread Academy',
+                    'contact_info': 'bread@artisanacademy.com | (781) 555-0691',
+                    'registration_required': True,
+                    'age_restrictions': 'Ages 14+ (teens with adult)',
                     'days_from_now': 38,
                     'start_hour': 15
                 },
                 {
                     'name': 'Waltham Restaurant Week Celebration',
                     'location': 'Various Restaurants, Waltham',
-                    'description': 'Week-long culinary celebration featuring special prix fixe menus at participating Waltham restaurants. Showcase local culinary talent and diverse cuisines.',
+                    'description': 'Week-long culinary celebration featuring special prix fixe menus at participating Waltham restaurants. Showcase local culinary talent and diverse cuisines. Over 15 restaurants participating.',
                     'category': 'food',
+                    'cost': 'Prix fixe menus $25-45',
+                    'organizer': 'Waltham Restaurant Association',
+                    'contact_info': 'info@walthamrestaurants.org | (781) 555-0802',
+                    'registration_required': False,
+                    'age_restrictions': 'Varies by restaurant',
                     'days_from_now': 84,
                     'start_hour': 17
                 },
                 {
                     'name': 'Coffee Cupping & Roasting Workshop',
                     'location': 'Waltham Coffee Roasters',
-                    'description': 'Professional coffee education session covering bean origins, roasting processes, proper cupping techniques, and brewing methods. Take home freshly roasted beans.',
+                    'description': 'Professional coffee education session covering bean origins, roasting processes, proper cupping techniques, and brewing methods. Take home freshly roasted beans and brewing guide.',
                     'category': 'food',
+                    'cost': '$40 per person',
+                    'organizer': 'Waltham Coffee Roasters',
+                    'contact_info': 'learn@walthamcoffee.com | (781) 555-0913',
+                    'registration_required': True,
+                    'age_restrictions': 'Ages 16+ (caffeine considerations)',
                     'days_from_now': 49,
                     'start_hour': 10
                 },
                 {
                     'name': 'Outdoor Farm Dinner Under the Stars',
                     'location': 'Historic Waltham Estate Gardens',
-                    'description': 'Magical outdoor dining experience featuring a six-course meal prepared with ingredients from local farms. Set in beautiful historic gardens with string lights.',
+                    'description': 'Magical outdoor dining experience featuring a six-course meal prepared with ingredients from local farms. Set in beautiful historic gardens with string lights and live acoustic music.',
                     'category': 'food',
+                    'cost': '$125 per person',
+                    'organizer': 'Farm to Fork Events',
+                    'contact_info': 'dinners@farmtofork.org | (781) 555-0124',
+                    'registration_required': True,
+                    'age_restrictions': '18+ preferred (outdoor setting)',
                     'days_from_now': 91,
                     'start_hour': 18
                 },
                 {
                     'name': 'Healthy Meal Prep & Nutrition Class',
                     'location': 'Waltham Community Center',
-                    'description': 'Practical meal preparation strategies, nutritional guidance, budget-friendly healthy cooking tips from registered dietitians. Hands-on cooking and meal planning.',
+                    'description': 'Practical meal preparation strategies, nutritional guidance, budget-friendly healthy cooking tips from registered dietitians. Hands-on cooking and meal planning session with take-home containers.',
                     'category': 'food',
+                    'cost': '$30 per person',
+                    'organizer': 'Waltham Health & Wellness',
+                    'contact_info': 'nutrition@walthamhealth.org | (781) 555-0235',
+                    'registration_required': True,
+                    'age_restrictions': 'Ages 18+ (cooking equipment)',
                     'days_from_now': 77,
                     'start_hour': 12
                 }
@@ -814,7 +889,12 @@ class EventScraper:
                                     description=event_data['description'],
                                     source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{days_ahead}",
                                     source_name="Waltham Food Events",
-                                    category=event_data['category']
+                                    category=event_data['category'],
+                                    cost=event_data.get('cost', ''),
+                                    organizer=event_data.get('organizer', ''),
+                                    contact_info=event_data.get('contact_info', ''),
+                                    registration_required=event_data.get('registration_required', False),
+                                    age_restrictions=event_data.get('age_restrictions', '')
                                 )
                                 
                                 if self.db.insert_event(event):
@@ -837,7 +917,12 @@ class EventScraper:
                                 description=event_data['description'],
                                 source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{days_ahead}",
                                 source_name="Waltham Food Events",
-                                category=event_data['category']
+                                category=event_data['category'],
+                                cost=event_data.get('cost', ''),
+                                organizer=event_data.get('organizer', ''),
+                                contact_info=event_data.get('contact_info', ''),
+                                registration_required=event_data.get('registration_required', False),
+                                age_restrictions=event_data.get('age_restrictions', '')
                             )
                             
                             if self.db.insert_event(event):
@@ -856,7 +941,12 @@ class EventScraper:
                         description=event_data['description'],
                         source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{event_data.get('days_from_now', 30)}",
                         source_name="Waltham Food Events",
-                        category=event_data['category']
+                        category=event_data['category'],
+                        cost=event_data.get('cost', ''),
+                        organizer=event_data.get('organizer', ''),
+                        contact_info=event_data.get('contact_info', ''),
+                        registration_required=event_data.get('registration_required', False),
+                        age_restrictions=event_data.get('age_restrictions', '')
                     )
                     
                     if self.db.insert_event(event):

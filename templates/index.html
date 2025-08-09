@@ -114,6 +114,34 @@
                                         <strong>📍 Where:</strong> 
                                         <span class="text-secondary">{{ event.location or 'Location TBA' }}</span>
                                     </p>
+                                    
+                                    {% if event.cost %}
+                                    <p class="card-text mb-2">
+                                        <strong>💰 Cost:</strong> 
+                                        <span class="text-success">{{ event.cost }}</span>
+                                    </p>
+                                    {% endif %}
+                                    
+                                    {% if event.organizer %}
+                                    <p class="card-text mb-2">
+                                        <strong>👥 Organizer:</strong> 
+                                        <span class="text-info">{{ event.organizer }}</span>
+                                    </p>
+                                    {% endif %}
+                                    
+                                    {% if event.registration_required %}
+                                    <p class="card-text mb-2">
+                                        <strong>📝 Registration:</strong> 
+                                        <span class="badge bg-warning text-dark">Required</span>
+                                    </p>
+                                    {% endif %}
+                                    
+                                    {% if event.age_restrictions %}
+                                    <p class="card-text mb-2">
+                                        <strong>👶 Age Requirements:</strong> 
+                                        <span class="text-muted small">{{ event.age_restrictions }}</span>
+                                    </p>
+                                    {% endif %}
                                 </div>
                                 
                                 <p class="card-text flex-grow-1">
@@ -121,11 +149,16 @@
                                 </p>
                             </div>
                             <div class="card-footer">
-                                {% if event.source_url %}
-                                    <a href="{{ event.source_url }}" target="_blank" class="btn btn-outline-primary btn-sm w-100">
-                                        🔗 View Details
+                                <div class="d-flex gap-2">
+                                    <a href="{{ url_for('event_detail', event_id=event.id) }}" class="btn btn-primary btn-sm flex-fill">
+                                        📖 View Details
                                     </a>
-                                {% endif %}
+                                    {% if event.source_url %}
+                                    <a href="{{ event.source_url }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                        🔗
+                                    </a>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
