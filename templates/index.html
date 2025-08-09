@@ -153,7 +153,7 @@
                                     <a href="{{ url_for('event_detail', event_id=event.id) }}" class="btn btn-primary btn-sm flex-fill">
                                         📖 View Details
                                     </a>
-                                    {% if event.source_url %}
+                                    {% if event.source_url and not 'waltham-events.local' in event.source_url %}
                                     <a href="{{ event.source_url }}" target="_blank" class="btn btn-outline-secondary btn-sm">
                                         🔗
                                     </a>

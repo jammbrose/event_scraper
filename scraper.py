@@ -887,7 +887,7 @@ class EventScraper:
                                     date_time=event_datetime,
                                     location=event_data['location'],
                                     description=event_data['description'],
-                                    source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{days_ahead}",
+                                    source_url=self._get_food_event_url(event_data),
                                     source_name="Waltham Food Events",
                                     category=event_data['category'],
                                     cost=event_data.get('cost', ''),
@@ -915,7 +915,7 @@ class EventScraper:
                                 date_time=event_datetime,
                                 location=event_data['location'],
                                 description=event_data['description'],
-                                source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{days_ahead}",
+                                source_url=self._get_food_event_url(event_data),
                                 source_name="Waltham Food Events",
                                 category=event_data['category'],
                                 cost=event_data.get('cost', ''),
@@ -939,7 +939,7 @@ class EventScraper:
                         date_time=event_datetime,
                         location=event_data['location'],
                         description=event_data['description'],
-                        source_url=f"https://waltham-events.local/food-events/{event_data['name'].lower().replace(' ', '-').replace('&', 'and')}-{event_data.get('days_from_now', 30)}",
+                        source_url=self._get_food_event_url(event_data),
                         source_name="Waltham Food Events",
                         category=event_data['category'],
                         cost=event_data.get('cost', ''),
@@ -988,6 +988,26 @@ class EventScraper:
             return 'sports'
         else:
             return 'general'
+    
+    def _get_food_event_url(self, event_data):
+        """Get appropriate URL for food events."""
+        # Map event types to real or meaningful URLs
+        event_name = event_data['name'].lower()
+        
+        # Real URLs for specific types of events
+        if 'farmers market' in event_name:
+            return "https://www.city.waltham.ma.us/farmers-market"
+        elif 'food truck' in event_name:
+            return "https://www.city.waltham.ma.us/recreation-department"
+        elif 'library' in event_data.get('location', '').lower():
+            return "https://waltham.lib.ma.us/programs/"
+        elif 'community center' in event_data.get('location', '').lower():
+            return "https://www.city.waltham.ma.us/community-center"
+        elif 'common' in event_data.get('location', '').lower():
+            return "https://www.city.waltham.ma.us/waltham-common"
+        else:
+            # For specialized food events, return None so no "Visit Source" button appears
+            return None
 
 
 def main():

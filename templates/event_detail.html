@@ -111,7 +111,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="d-flex flex-column flex-sm-row gap-3">
-                            {% if event.source_url %}
+                            {% if event.source_url and not 'waltham-events.local' in event.source_url %}
                             <a href="{{ event.source_url }}" target="_blank" class="btn btn-primary">
                                 🔗 Visit Original Source
                             </a>
@@ -121,6 +121,12 @@
                             <a href="mailto:{{ event.contact_info.split('|')[0].strip() }}" class="btn btn-outline-primary">
                                 ✉️ Send Email
                             </a>
+                            {% endif %}
+                            
+                            {% if event.organizer %}
+                            <button class="btn btn-outline-info" onclick="searchOrganizer('{{ event.organizer }}')">
+                                🔍 Find More from {{ event.organizer }}
+                            </button>
                             {% endif %}
                             
                             <button class="btn btn-outline-secondary" onclick="shareEvent()">
@@ -157,6 +163,12 @@ function shareEvent() {
             alert('Event URL copied to clipboard!');
         });
     }
+}
+
+function searchOrganizer(organizer) {
+    // Search for more events from the same organizer
+    const searchUrl = '/?search=' + encodeURIComponent(organizer);
+    window.open(searchUrl, '_blank');
 }
 </script>
 {% endblock %}
